@@ -1,0 +1,14 @@
+
+{% for property in orderTypeEntity(entity.properties) %}
+import { {{property | uppercamelcase}} } from './{{ property.name | lower}}';
+{%endfor%}
+
+export class {{entity | uppercamelcase}} {
+  {% for property in entity.properties %}
+  {% if property is entity %}
+  {{property | uppercamelcase}}: {{property.type | uppercamelcase}};
+  {% else %}
+  {{property | uppercamelcase}}:	{{property.type|angulartype}};  
+  {% endif %}
+	{% endfor %}
+}

@@ -1,0 +1,51 @@
+project name sesiones
+
+type integer
+type string
+type bool
+type time
+
+
+entity participante_sesion  {
+	id:integer
+	sesion:sesion
+	rol_participante_sesion:rol_participante_sesion
+	ente:integer
+}
+
+entity sesion  {
+	id                 :integer[]
+	Descripcion        :string
+	FechaCreacion      :time
+	FechaModificacion  :time
+	FechaInicio        :time
+	FechaFin           :time
+	Periodo            :integer
+	Recurrente         :bool
+	Numero_Recurrencias :integer
+	tipo_sesion         :tipo_sesion[]
+}
+
+entity tipo_sesion  {
+	id                :integer
+	Nombre            :string
+	Descripcion       :string
+	Codigo_Abreviacion :string
+	Activo            :bool
+	NumeroOrden       :integer
+}
+
+entity Relacion_sesiones  {
+	id          :integer
+	sesionPadre :sesion
+	sesionHijo  :sesion
+}
+
+entity rol_participante_sesion  {
+	id                :integer
+	Nombre            :string
+	Descripcion       :string
+	CodigoAbreviacion :string
+	Activo            :bool
+	NumeroOrden       :integer
+}

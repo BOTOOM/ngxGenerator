@@ -1,0 +1,32 @@
+// import { NbMenuItem } from '@nebular/theme';
+import { MenuItem } from './menu-item';
+
+export const MENU_ITEMS: MenuItem[] = [
+  {
+    title: 'Dashboard',
+    icon: 'nb-home',
+    link: '/pages/dashboard',
+    home: true,
+    key: 'dashboard',
+  },
+  {% for entity in entity_model.entities %}
+  {
+    title: '{{entity | spacecase}}',
+    icon: 'nb-compose',
+    link: '/pages/{{entity.name | lower}}',
+    key: '{{entity.name | lower}}',
+    children: [
+      {
+        title: 'Lista {{entity | spacecase}}',
+        link: '/pages/{{entity.name | lower}}/list_{{entity.name | lower}}',
+        key: 'lista_{{entity.name | lower}}',
+      },
+      {
+        title: 'CRUD {{entity | spacecase}}',
+        link: '/pages/{{entity.name | lower}}/crud_{{entity.name | lower}}',
+        key: 'crud_{{entity.name | lower}}',
+      },
+    ],
+  },
+  {% endfor %}
+];

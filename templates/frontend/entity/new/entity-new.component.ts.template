@@ -1,0 +1,37 @@
+import { Component, OnInit } from '@angular/core';
+import { {{entity.name}} } from '../../models/{{entity.name|lower}}';
+import { {{entity.name}}Service } from '../../services/{{entity.name|lower}}.service';
+import { Location } from '@angular/common';
+
+
+@Component({
+  selector: 'app-{{entity.name|lower}}-new',
+  templateUrl: './{{entity.name|lower}}-new.component.html',
+  styleUrls: []
+})
+export class {{entity.name}}NewComponent implements OnInit {
+
+  {{entity.name|lower}}: {{entity.name}};
+  display = false;
+  constructor(private {{entity.name|lower}}Service: {{entity.name}}Service, private location: Location) { }
+
+  ngOnInit() {
+    this.{{entity.name|lower}} = new {{entity.name}}();
+  }
+
+  guardar({{entity.name|lower}}: {{entity.name}}): void {
+
+    this.{{entity.name|lower}}Service.create({{entity.name|lower}});
+    this.display = true;
+
+  }
+
+  regresar(): void {
+    this.location.back();
+  }
+
+  cerrarDialogo(): void {
+    this.display = false;
+    this.location.back();
+  }
+}
