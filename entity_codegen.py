@@ -206,10 +206,6 @@ def main(entity,debug=False):
     with open(join(srcgen_folder_frontend_services, "%s.service.ts" % entity_model.name.lower()), 'w') as f:
         f.write(template.render(entity=entity_model))
  
-
-
-
-
 if __name__ == "__main__":
     entity = None
     if len(sys.argv) > 1:
