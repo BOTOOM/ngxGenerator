@@ -70,6 +70,14 @@ export let FORM_{{entity.name | upper}} = {
         requerido: true,
         entrelazado: false,
         opciones: [],
+    }, {
+        etiqueta: 'checkbox',
+        claseGrid: 'col-6',
+        nombre: 'happy',
+        label: 'happy:',
+        placeholder: 'Ej. happy',
+        requerido: false,
+        tipo: 'checkbox',
     },
 ],
 }

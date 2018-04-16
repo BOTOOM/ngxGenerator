@@ -220,7 +220,8 @@ def main(entity,debug=False):
     template_list_scss = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.scss.template')
     template_list_spec = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.spec.ts.template')
     template_list_html = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.html.template')
-    
+    template_list_component = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.ts.template')
+
     for entity in entity_model.entities:
         folder_frontend_module = join(this_folder, 'srcgen/frontend/modules/%s' % entity.name.lower())
         if not exists(folder_frontend_module):
@@ -262,6 +263,9 @@ def main(entity,debug=False):
         #html list
         with open(join(folder_frontend_module_list, "list-%s.component.html" % entity.name.lower()), 'w') as f:
             f.write(template_list_html.render(entity=entity))  
+        #component list
+        with open(join(folder_frontend_module_list, "list-%s.component.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_list_component.render(entity=entity, entity_model=entity_model))  
 
 if __name__ == "__main__":
     entity = None

@@ -56,10 +56,11 @@ export class CrudPersonaComponent implements OnInit {
       icon: 'warning',
       buttons: true,
       dangerMode: true,
+      showCancelButton: true,
     };
     Swal(opt)
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.value) {
         this.info_persona = <Persona>persona;
         this.personaService.put('persona', this.info_persona)
           .subscribe(res => {
@@ -78,10 +79,11 @@ export class CrudPersonaComponent implements OnInit {
       icon: 'warning',
       buttons: true,
       dangerMode: true,
+      showCancelButton: true,
     };
     Swal(opt)
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.value) {
         this.info_persona = <Persona>persona;
         this.personaService.post('persona', this.info_persona)
           .subscribe(res => {

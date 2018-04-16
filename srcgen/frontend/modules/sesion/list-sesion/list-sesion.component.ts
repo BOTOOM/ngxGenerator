@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { PersonaService } from '../../../@core/data/persona.service';
+import { SesionesService } from '../../../@core/data/sesiones.service';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
-  selector: 'ngx-list-persona',
-  templateUrl: './list-persona.component.html',
-  styleUrls: ['./list-persona.component.scss'],
+  selector: 'ngx-list-sesion',
+  templateUrl: './list-sesion.component.html',
+  styleUrls: ['./list-sesion.component.scss'],
   })
-export class ListPersonaComponent implements OnInit {
+export class ListSesionComponent implements OnInit {
   uid: number;
   cambiotab: boolean = false;
   config: ToasterConfig;
@@ -33,45 +33,72 @@ export class ListPersonaComponent implements OnInit {
     columns: {
       Id: {
         title: 'Id',
-        type: 'number',
-      },
-      PrimerNombre: {
-        title: 'Primer Nombre',
-        type: 'string',
-      },
-      SegundoNombre: {
-        title: 'Segundo Nombre',
-        type: 'string',
-      },
-      PrimerApellido: {
-        title: 'Primer Apellido',
-        type: 'string',
-      },
-      SegundoApellido: {
-        title: 'Segundo Apellido',
-        type: 'string',
-      },
-      Usuario: {
-        title: 'Usuario',
-        type: 'string',
-      },
-      Ente: {
-        title: 'Ente',
-        type: 'number',
-      },
-      FechaNacimiento: {
-        title: 'FechaNacimiento',
-        type: 'Date',
-      },
-      Foto: {
-        title: 'Foto',
-        type: 'number',
-      },
-      Genero: {
-        title: 'Genero',
-        type: 'text',
+        // type: 'number;',
         valuePrepareFunction: (value) => {
-          return value.Nombre;
+          return value;
+        },
+      },
+      Descripcion: {
+        title: 'Descripcion',
+        // type: 'string;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Fechacreacion: {
+        title: 'Fechacreacion',
+        // type: 'Date;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Fechamodificacion: {
+        title: 'Fechamodificacion',
+        // type: 'Date;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Fechainicio: {
+        title: 'Fechainicio',
+        // type: 'Date;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Fechafin: {
+        title: 'Fechafin',
+        // type: 'Date;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Periodo: {
+        title: 'Periodo',
+        // type: 'number;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      Recurrente: {
+        title: 'Recurrente',
+        // type: 'boolean;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      NumeroRecurrencias: {
+        title: 'NumeroRecurrencias',
+        // type: 'number;',
+        valuePrepareFunction: (value) => {
+          return value;
+        },
+      },
+      TipoSesion: {
+        title: 'TipoSesion',
+        // type: 'tipo_sesion;',
+        valuePrepareFunction: (value) => {
+          return value;
         },
       },
     },
@@ -79,17 +106,14 @@ export class ListPersonaComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private personaService: PersonaService, private toasterService: ToasterService) {
+  constructor(private sesionesService: SesionesService, private toasterService: ToasterService) {
     this.loadData();
   }
 
   loadData(): void {
-    this.personaService.get('persona/?limit=0').subscribe(res => {
+    this.sesionesService.get('sesion/?limit=0').subscribe(res => {
       if (res !== null) {
         const data = <Array<any>>res;
-        data.forEach(element => {
-          element.Genero = { Id: 1, Nombre: 'as' }
-        });
         this.source.load(data);
           }
     });
@@ -111,18 +135,20 @@ export class ListPersonaComponent implements OnInit {
   onDelete(event): void {
     const opt: any = {
       title: 'Deleting?',
-      text: 'Delete Persona!',
+      text: 'Delete Sesion!',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
+      showCancelButton: true,
     };
     Swal(opt)
     .then((willDelete) => {
-      if (willDelete) {
-        this.personaService.delete('persona/', event.data).subscribe(res => {
+
+      if (willDelete.value) {
+        this.sesionesService.delete('sesion/', event.data).subscribe(res => {
           if (res !== null) {
             this.loadData();
-            this.showToast('info', 'deleted', 'Persona deleted');
+            this.showToast('info', 'deleted', 'Sesion deleted');
             }
          });
       }
