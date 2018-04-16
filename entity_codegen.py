@@ -125,8 +125,10 @@ def main(entity,debug=False):
     if not exists(srcgen_folder_frontend_routing):
         mkdir(srcgen_folder_frontend_routing)
 
+    srcgen_folder_frontend_modules = join(this_folder, 'srcgen/frontend/modules')
+    if not exists(srcgen_folder_frontend_modules):
+        mkdir(srcgen_folder_frontend_modules)    
 
-    
     # Initialize template engine.
     jinja_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(this_folder),
@@ -205,7 +207,62 @@ def main(entity,debug=False):
     #for entity in entity_model.entities:
     with open(join(srcgen_folder_frontend_services, "%s.service.ts" % entity_model.name.lower()), 'w') as f:
         f.write(template.render(entity=entity_model))
- 
+
+
+    #modules
+    template_module = jinja_env.get_template('templates/frontend/module/entity.module.ts.template')
+    template_component = jinja_env.get_template('templates/frontend/module/entity.component.ts.template')
+    template_routing_module = jinja_env.get_template('templates/frontend/module/entity-routing.module.ts.template')
+    template_crud_scss = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.scss.template')
+    template_crud_spec = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.spec.ts.template')
+    template_crud_html = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.html.template')
+
+    template_list_scss = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.scss.template')
+    template_list_spec = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.spec.ts.template')
+    template_list_html = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.html.template')
+    
+    for entity in entity_model.entities:
+        folder_frontend_module = join(this_folder, 'srcgen/frontend/modules/%s' % entity.name.lower())
+        if not exists(folder_frontend_module):
+            mkdir(folder_frontend_module)  
+        # entity.module.ts
+        with open(join(folder_frontend_module, "%s.module.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_module.render(entity=entity,entity_model=entity_model))
+        # entity.component.ts
+        with open(join(folder_frontend_module, "%s.component.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_component.render(entity=entity)) 
+        # entity.routing.ts
+        with open(join(folder_frontend_module, "%s-routing.module.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_routing_module.render(entity=entity)) 
+        #crud
+        folder_frontend_module_crud = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/crud-%s' %  entity.name.lower() )
+        if not exists(folder_frontend_module_crud):
+            mkdir(folder_frontend_module_crud)  
+        #scss crud
+        with open(join(folder_frontend_module_crud, "crud-%s.component.scss" % entity.name.lower()), 'w') as f:
+            f.write(template_crud_scss.render(entity=entity)) 
+        #spec crud
+        with open(join(folder_frontend_module_crud, "crud-%s.component.spec.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_crud_spec.render(entity=entity)) 
+        #html crud
+        with open(join(folder_frontend_module_crud, "crud-%s.component.html" % entity.name.lower()), 'w') as f:
+            f.write(template_crud_html.render(entity=entity)) 
+        
+
+        #list
+        folder_frontend_module_list = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/list-%s' %  entity.name.lower() )
+        if not exists(folder_frontend_module_list):
+            mkdir(folder_frontend_module_list)  
+        #scss list
+        with open(join(folder_frontend_module_list, "list-%s.component.scss" % entity.name.lower()), 'w') as f:
+            f.write(template_list_scss.render(entity=entity)) 
+        #spec list
+        with open(join(folder_frontend_module_list, "list-%s.component.spec.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_list_spec.render(entity=entity)) 
+        #html list
+        with open(join(folder_frontend_module_list, "list-%s.component.html" % entity.name.lower()), 'w') as f:
+            f.write(template_list_html.render(entity=entity))  
+
 if __name__ == "__main__":
     entity = None
     if len(sys.argv) > 1:

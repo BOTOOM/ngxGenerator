@@ -1,0 +1,6 @@
+
+<toaster-container [toasterconfig]="config"></toaster-container>
+<ngx-dinamicform [normalform]="form{{entity | uppercamelcase}}" [modeloData]="info_{{entity.name | lower}}" (result)="validarForm($event)" [clean]="clean">
+</ngx-dinamicform>
+
+
