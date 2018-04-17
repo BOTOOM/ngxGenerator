@@ -41,7 +41,6 @@ def main(entity,debug=False):
         temp = ""
         temp += x[0].lower()
         for t in x[1:] :
-            print temp
             temp += t.capitalize()
         return temp
 
@@ -77,6 +76,26 @@ def main(entity,debug=False):
                 'time': 'Date',
                 'float': 'number'
         }.get(s.name, s.name)
+
+    def formtype(s):
+        if is_entity(s):
+            return 'select'
+        return {
+                'integer': 'input',
+                'string': 'input',
+                'bool': 'checkbox',
+                'time': 'mat-date',
+                'float': 'input'
+        }.get(s.type.name, s.type.name)
+
+    def htmltype(s):
+        return {
+                'integer': 'number',
+                'string': 'text',
+                'bool': 'checkbox',
+                'time': 'date',
+                'float': 'number'
+        }.get(s.name, upper_camel_case(s))
 
     def orderTypeEntity(properties):
         types=[]
@@ -148,6 +167,10 @@ def main(entity,debug=False):
 
     jinja_env.tests['entity'] = is_entity
 
+    jinja_env.filters['formtype'] = formtype
+
+    jinja_env.filters['htmltype'] = htmltype
+
     
     """
     # Load Backend Controllers
@@ -216,6 +239,8 @@ def main(entity,debug=False):
     template_crud_scss = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.scss.template')
     template_crud_spec = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.spec.ts.template')
     template_crud_html = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.html.template')
+    template_crud_component = jinja_env.get_template('templates/frontend/module/crud-entity/crud-entity.component.ts.template')
+    template_crud_form = jinja_env.get_template('templates/frontend/module/crud-entity/form-entity.ts.template')
 
     template_list_scss = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.scss.template')
     template_list_spec = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.spec.ts.template')
@@ -248,7 +273,12 @@ def main(entity,debug=False):
         #html crud
         with open(join(folder_frontend_module_crud, "crud-%s.component.html" % entity.name.lower()), 'w') as f:
             f.write(template_crud_html.render(entity=entity)) 
-        
+        #form crud
+        with open(join(folder_frontend_module_crud, "form-%s.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_crud_form.render(entity=entity))       
+        #component crud
+        with open(join(folder_frontend_module_crud, "crud-%s.component.ts" % entity.name.lower()), 'w') as f:
+            f.write(template_crud_component.render(entity=entity,entity_model=entity_model, orderTypeEntity=orderTypeEntity))   
 
         #list
         folder_frontend_module_list = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/list-%s' %  entity.name.lower() )

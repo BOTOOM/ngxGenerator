@@ -14,16 +14,16 @@ entity participante_sesion  {
 }
 
 entity sesion  {
-	id                 :integer[]
+	id                 :integer
 	Descripcion        :string
-	FechaCreacion      :time
-	FechaModificacion  :time
-	FechaInicio        :time
-	FechaFin           :time
+	Fecha_Creacion      :time
+	Fecha_Modificacion  :time
+	Fecha_Inicio        :time
+	Fecha_Fin           :time
 	Periodo            :integer
 	Recurrente         :bool
 	Numero_Recurrencias :integer
-	tipo_sesion         :tipo_sesion[]
+	tipo_sesion         :tipo_sesion
 }
 
 entity tipo_sesion  {
@@ -32,20 +32,20 @@ entity tipo_sesion  {
 	Descripcion       :string
 	Codigo_Abreviacion :string
 	Activo            :bool
-	NumeroOrden       :integer
+	Numero_Orden       :integer
 }
 
 entity Relacion_sesiones  {
 	id          :integer
-	sesionPadre :sesion
-	sesionHijo  :sesion
+	sesion_Padre :sesion
+	sesion_Hijo  :sesion
 }
 
 entity rol_participante_sesion  {
 	id                :integer
 	Nombre            :string
 	Descripcion       :string
-	CodigoAbreviacion :string
+	Codigo_Abreviacion :string
 	Activo            :bool
-	NumeroOrden       :integer
+	Numero_Orden       :integer
 }

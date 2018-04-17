@@ -1,0 +1,173 @@
+{% for property in orderTypeEntity(entity.properties) %}
+import { {{property | uppercamelcase}} } from './../../../@core/data/models/{{ property.name | lower}}';
+{%endfor%}
+
+import { {{entity | uppercamelcase}} } from './../../../@core/data/models/{{entity.name | lower}}';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { {{entity_model | uppercamelcase}}Service } from '../../../@core/data/{{entity_model.name | lower}}.service';
+import { FORM_{{entity.name | upper}} } from './form-{{entity.name | lower}}';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import Swal from 'sweetalert2';
+import 'style-loader!angular2-toaster/toaster.css';
+
+@Component({
+  selector: 'ngx-crud-{{entity.name | lower}}',
+  templateUrl: './crud-{{entity.name | lower}}.component.html',
+  styleUrls: ['./crud-{{entity.name | lower}}.component.scss'],
+})
+export class Crud{{entity | uppercamelcase}}Component implements OnInit {
+  config: ToasterConfig;
+  {{entity.name | lower}}_id: number;
+
+  @Input('{{entity.name | lower}}_id')
+  set name({{entity.name | lower}}_id: number) {
+    this.{{entity.name | lower}}_id = {{entity.name | lower}}_id;
+    this.load{{entity| uppercamelcase}}();
+  }
+
+  @Output('eventchange') eventChange: EventEmitter<boolean> = new EventEmitter();
+
+  info_{{entity.name| lower}}: {{entity | uppercamelcase}};
+  form{{entity | uppercamelcase}}: any;
+  reg{{entity | uppercamelcase}}: any;
+  clean: boolean;
+
+  constructor(private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
+    this.form{{entity | uppercamelcase}} = FORM_{{entity.name | upper}};
+    {% for property in entity.properties %}
+    {% if property is entity %}
+    this.loadOptions{{property | uppercamelcase}}();
+    {% endif %}
+    {%endfor%}
+   }
+
+  {% for property in entity.properties %}
+  {% if property is entity %}
+  loadOptions{{property | uppercamelcase}}(): void {
+    let {{property | lowercamelcase}}: Array<any> = [];
+      this.{{entity_model | lowercamelcase}}Service.get('{{property.type.name | lower}}/?limit=0')
+        .subscribe(res => {
+          if (res !== null) {
+            {{property | lowercamelcase}} = <Array<{{property.type | uppercamelcase}}>>res;
+            {{property | lowercamelcase}}.forEach(element => {
+              element.valor=JSON.stringify(element);
+              //Object.defineProperty(element, 'valor',
+              //Object.getOwnPropertyDescriptor(element, 'Nombre'));
+            });
+          }
+          this.form{{entity | uppercamelcase}}.campos[ this.getIndexForm('{{property | uppercamelcase}}') ].opciones = {{property | lowercamelcase}};
+        });
+  }
+  {% endif %}
+  {%endfor%}
+
+  
+
+  getIndexForm(nombre:String): number {
+    for (let index = 0; index < this.form{{entity | uppercamelcase}}.campos.length; index++) {
+      const element = this.form{{entity | uppercamelcase}}.campos[index];
+      if (element.nombre === nombre) {
+        return index
+      }
+    }
+    return 0;
+  }
+
+
+  public load{{entity| uppercamelcase}}(): void {
+    if (this.{{entity.name | lower}}_id !== undefined && this.{{entity.name | lower}}_id !== 0) {
+      this.{{entity_model | lowercamelcase}}Service.get('{{entity.name | lower}}/?query=id:' + this.{{entity.name | lower}}_id)
+        .subscribe(res => {
+          if (res !== null) {
+            this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>res[0];
+          }
+        });
+    } else  {
+      this.info_{{entity.name| lower}} = undefined;
+      this.clean = !this.clean;
+    }
+  }
+
+  update{{entity | uppercamelcase}}({{entity | lowercamelcase}}: any): void {
+
+    const opt: any = {
+      title: 'Update?',
+      text: 'Update {{entity | uppercamelcase}}!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      showCancelButton: true,
+    };
+    Swal(opt)
+    .then((willDelete) => {
+      if (willDelete.value) {
+        this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>{{entity | lowercamelcase}};
+        this.{{entity_model | lowercamelcase}}Service.put('{{entity.name | lower}}', this.info_{{entity.name| lower}})
+          .subscribe(res => {
+            this.load{{entity| uppercamelcase}}();
+            this.eventChange.emit(true);
+            this.showToast('info', 'updated', '{{entity | uppercamelcase}} updated');
+          });
+      }
+    });
+  }
+
+  create{{entity | uppercamelcase}}({{entity | lowercamelcase}}: any): void {
+    const opt: any = {
+      title: 'Create?',
+      text: 'Create {{entity | uppercamelcase}}!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      showCancelButton: true,
+    };
+    Swal(opt)
+    .then((willDelete) => {
+      if (willDelete.value) {
+        this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>{{entity | lowercamelcase}};
+        this.{{entity_model | lowercamelcase}}Service.post('{{entity.name | lower}}', this.info_{{entity.name| lower}})
+          .subscribe(res => {
+            this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>res;
+            this.eventChange.emit(true);
+            this.showToast('info', 'created', '{{entity | uppercamelcase}} created');
+          });
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.load{{entity| uppercamelcase}}();
+  }
+
+  validarForm(event) {
+    if (event.valid) {
+      if (this.info_{{entity.name| lower}} === undefined) {
+        this.create{{entity | uppercamelcase}}(event.data.{{entity | uppercamelcase}});
+      } else {
+        this.update{{entity | uppercamelcase}}(event.data.{{entity | uppercamelcase}});
+      }
+    }
+  }
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
+      positionClass: 'toast-top-center',
+      timeout: 5000,  // ms
+      newestOnTop: true,
+      tapToDismiss: false, // hide on click
+      preventDuplicates: true,
+      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
+      limit: 5,
+    });
+    const toast: Toast = {
+      type: type, // 'default', 'info', 'success', 'warning', 'error'
+      title: title,
+      body: body,
+      showCloseButton: true,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
+  }
+
+}

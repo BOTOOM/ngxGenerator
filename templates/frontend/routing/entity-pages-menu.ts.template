@@ -18,12 +18,12 @@ export const MENU_ITEMS: MenuItem[] = [
     children: [
       {
         title: 'Lista {{entity | spacecase}}',
-        link: '/pages/{{entity.name | lower}}/list_{{entity.name | lower}}',
+        link: '/pages/{{entity.name | lower}}/list-{{entity.name | lower}}',
         key: 'lista_{{entity.name | lower}}',
       },
       {
         title: 'CRUD {{entity | spacecase}}',
-        link: '/pages/{{entity.name | lower}}/crud_{{entity.name | lower}}',
+        link: '/pages/{{entity.name | lower}}/crud-{{entity.name | lower}}',
         key: 'crud_{{entity.name | lower}}',
       },
     ],

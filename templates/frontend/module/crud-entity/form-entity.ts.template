@@ -1,0 +1,24 @@
+
+export let FORM_{{entity.name | upper}} = {
+    titulo: '{{entity | uppercamelcase}}',
+    tipo_formulario: 'mini',
+    btn: 'Guardar',
+    alertas: true,
+    modelo: '{{entity | uppercamelcase}}',
+    campos: [
+    {% for property in entity.properties %}
+    {
+        etiqueta: '{{property | formtype}}',
+        claseGrid: 'col-6',
+        nombre: '{{property | uppercamelcase}}',
+        label: '{{property | uppercamelcase}}*:',
+        placeholder: 'Ej. {{property | uppercamelcase}}',
+        requerido: true,
+        tipo: '{{property.type | htmltype}}',
+        {% if property is entity %}
+        opciones: [],
+        {% endif %}
+    },
+    {% endfor %}
+    ],
+}
