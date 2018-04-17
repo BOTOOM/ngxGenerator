@@ -2,7 +2,6 @@ import { {{entity | uppercamelcase}}RoutingModule, routedComponents } from './{{
 import { NgModule } from '@angular/core';
 import { ThemeModule } from '../../@theme/theme.module';
 import { {{entity_model | uppercamelcase}}Service } from '../../@core/data/{{entity_model.name | lower}}.service';
-import { SmartTableService } from '../../@core/data/smart-table.service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ToasterModule } from 'angular2-toaster';
 
@@ -18,7 +17,6 @@ import { ToasterModule } from 'angular2-toaster';
   ],
   providers: [
     {{entity_model | uppercamelcase}}Service,
-    SmartTableService,
   ],
 })
 export class {{entity| uppercamelcase}}Module { }

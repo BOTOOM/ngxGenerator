@@ -6,6 +6,7 @@ import sys
 import os
 from os import mkdir
 from os.path import exists, dirname, join
+from shutil import copytree
 import jinja2
 from textx.metamodel import metamodel_from_file
 from textx.export import metamodel_export, model_export
@@ -111,6 +112,12 @@ def main(entity,debug=False):
     if not exists(srcgen_folder):
         mkdir(srcgen_folder)
 
+    #copy project folder
+    srcgen_folder_project = join(this_folder, 'srcgen/project')
+    if not exists(srcgen_folder_project):
+        copytree('templates/project_template', srcgen_folder_project)
+
+    """
     srcgen_folder_backend = join(this_folder, 'srcgen/backend')
     if not exists(srcgen_folder_backend):
         mkdir(srcgen_folder_backend)
@@ -146,7 +153,28 @@ def main(entity,debug=False):
 
     srcgen_folder_frontend_modules = join(this_folder, 'srcgen/frontend/modules')
     if not exists(srcgen_folder_frontend_modules):
-        mkdir(srcgen_folder_frontend_modules)    
+        mkdir(srcgen_folder_frontend_modules)  
+
+    srcgen_folder_frontend_conf = join(this_folder, 'srcgen/frontend/conf')
+    if not exists(srcgen_folder_frontend_conf):
+        mkdir(srcgen_folder_frontend_conf)      
+
+    srcgen_folder_frontend_translate = join(this_folder, 'srcgen/frontend/translate')
+    if not exists(srcgen_folder_frontend_translate):
+        mkdir(srcgen_folder_frontend_translate) 
+    """
+
+    srcgen_folder_frontend_model = join(this_folder, 'srcgen/project/src/app/@core/data/models')
+
+    srcgen_folder_frontend_services = join(this_folder, 'srcgen/project/src/app/@core/data')
+
+    srcgen_folder_frontend_routing = join(this_folder, 'srcgen/project/src/app/pages')
+
+    srcgen_folder_frontend_modules = join(this_folder, 'srcgen/project/src/app/pages')
+
+    srcgen_folder_frontend_conf = join(this_folder, 'srcgen/project/src/app')
+ 
+    srcgen_folder_frontend_translate = join(this_folder, 'srcgen/project/src/assets/i18n')
 
     # Initialize template engine.
     jinja_env = jinja2.Environment(
@@ -217,7 +245,17 @@ def main(entity,debug=False):
     with open(join(srcgen_folder_frontend_routing, "pages-routing.module.ts"), 'w') as f:
             f.write(template.render(entity_model=entity_model))
 
-    
+    # config Template
+    template = jinja_env.get_template('templates/frontend/conf/app-config.ts.template')
+    with open(join(srcgen_folder_frontend_conf, "app-config.ts"), 'w') as f:
+            f.write(template.render(entity_model=entity_model))
+
+    # translateTemplate
+    template = jinja_env.get_template('templates/frontend/translate/lang.json.template')
+    with open(join(srcgen_folder_frontend_translate, "es.json"), 'w') as f:
+            f.write(template.render(entity_model=entity_model))
+    with open(join(srcgen_folder_frontend_translate, "en.json"), 'w') as f:
+            f.write(template.render(entity_model=entity_model))
 
     # Models
     template = jinja_env.get_template('templates/frontend/models/entity.ts.template')
@@ -248,7 +286,8 @@ def main(entity,debug=False):
     template_list_component = jinja_env.get_template('templates/frontend/module/list-entity/list-entity.component.ts.template')
 
     for entity in entity_model.entities:
-        folder_frontend_module = join(this_folder, 'srcgen/frontend/modules/%s' % entity.name.lower())
+        #folder_frontend_module = join(this_folder, 'srcgen/frontend/modules/%s' % entity.name.lower())
+        folder_frontend_module = join(this_folder, 'srcgen/project/src/app/pages/%s' % entity.name.lower())
         if not exists(folder_frontend_module):
             mkdir(folder_frontend_module)  
         # entity.module.ts
@@ -261,7 +300,8 @@ def main(entity,debug=False):
         with open(join(folder_frontend_module, "%s-routing.module.ts" % entity.name.lower()), 'w') as f:
             f.write(template_routing_module.render(entity=entity)) 
         #crud
-        folder_frontend_module_crud = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/crud-%s' %  entity.name.lower() )
+        #folder_frontend_module_crud = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/crud-%s' %  entity.name.lower() )
+        folder_frontend_module_crud = join(this_folder, 'srcgen/project/src/app/pages/%s' %entity.name.lower()+'/crud-%s' %  entity.name.lower() )
         if not exists(folder_frontend_module_crud):
             mkdir(folder_frontend_module_crud)  
         #scss crud
@@ -281,7 +321,8 @@ def main(entity,debug=False):
             f.write(template_crud_component.render(entity=entity,entity_model=entity_model, orderTypeEntity=orderTypeEntity))   
 
         #list
-        folder_frontend_module_list = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/list-%s' %  entity.name.lower() )
+        #folder_frontend_module_list = join(this_folder, 'srcgen/frontend/modules/%s' %entity.name.lower()+'/list-%s' %  entity.name.lower() )
+        folder_frontend_module_list = join(this_folder, 'srcgen/project/src/app/pages/%s' %entity.name.lower()+'/list-%s' %  entity.name.lower() )
         if not exists(folder_frontend_module_list):
             mkdir(folder_frontend_module_list)  
         #scss list

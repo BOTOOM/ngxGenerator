@@ -1,0 +1,25 @@
+{
+  "HOME": {
+    "TITLE": "{{entity_model.name | upper }}",
+    "SELECT": "Cambiar idioma",
+    "LOGIN": "Iniciar sesion",
+    "LOGOUT": "Cerra sesion"
+  },
+  "MENU": {
+    "dashboard": "Inicio",
+    {% for entity in entity_model.entities %}
+    "{{entity.name | lower}}": {
+      "{{entity.name | lower}}": "{{entity.name | lower}}",
+      "lista_{{entity.name | lower}}": "lista {{entity.name | lower}}",
+      "crud_{{entity.name | lower}}": "Crud {{entity.name | lower}}"
+    },
+    {% endfor %}
+    "auth": {
+      "auth": "Autenticacion",
+      "login": "Login",
+      "register": "Registro",
+      "request-password": "Recuperar Password",
+      "reset-password": "Reiniciar Password"
+    }
+  }
+}
