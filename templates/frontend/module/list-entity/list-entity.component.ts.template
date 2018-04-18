@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
-  selector: 'ngx-list-{{entity.name | lower}}',
+  selector: 'ngx-list-{{entity | kebabcase}}',
   templateUrl: './list-{{entity.name | lower}}.component.html',
   styleUrls: ['./list-{{entity.name | lower}}.component.scss'],
   })
@@ -140,3 +140,4 @@ export class List{{entity | uppercamelcase}}Component implements OnInit {
   }
 
 }
+

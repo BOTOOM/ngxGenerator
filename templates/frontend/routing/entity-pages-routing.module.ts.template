@@ -8,22 +8,22 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
-  {
+    {
     path: 'dashboard',
     component: DashboardComponent,
-  }, 
+    },
   {% for entity in entity_model.entities %}
-  {
+    {
     path: '{{entity.name | lower}}',
     loadChildren: './{{entity.name | lower}}/{{entity.name | lower}}.module#{{entity | uppercamelcase}}Module',
-  },
-  {% endfor %}
- 
-  {
+    },
+    {% endfor %}
+    {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
-  }],
+    },
+  ],
 }];
 
 @NgModule({
@@ -32,3 +32,5 @@ const routes: Routes = [{
 })
 export class PagesRoutingModule {
 }
+
+

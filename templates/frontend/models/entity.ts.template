@@ -8,7 +8,8 @@ export class {{entity | uppercamelcase}} {
   {% if property is entity %}
   {{property | uppercamelcase}}: {{property.type | uppercamelcase}};
   {% else %}
-  {{property | uppercamelcase}}:	{{property.type|angulartype}};  
+  {{property | uppercamelcase}}: {{property.type|angulartype}};
   {% endif %}
 	{% endfor %}
 }
+

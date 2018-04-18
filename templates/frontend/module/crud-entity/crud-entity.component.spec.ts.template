@@ -26,3 +26,4 @@ describe('Crud{{entity | uppercamelcase}}Component', () => {
     expect(component).toBeTruthy();
   });
 });
+

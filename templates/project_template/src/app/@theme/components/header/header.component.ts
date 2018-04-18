@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-  ngOnInit() {      
+  ngOnInit() {
     this.autenticacion.init();
   }
   liveToken() {

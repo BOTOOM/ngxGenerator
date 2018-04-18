@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
-  selector: 'ngx-crud-{{entity.name | lower}}',
+  selector: 'ngx-crud-{{entity | kebabcase}}',
   templateUrl: './crud-{{entity.name | lower}}.component.html',
   styleUrls: ['./crud-{{entity.name | lower}}.component.scss'],
 })
@@ -25,7 +25,7 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
     this.load{{entity| uppercamelcase}}();
   }
 
-  @Output('eventchange') eventChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() eventChange = new EventEmitter();
 
   info_{{entity.name| lower}}: {{entity | uppercamelcase}};
   form{{entity | uppercamelcase}}: any;
@@ -50,9 +50,9 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
           if (res !== null) {
             {{property | lowercamelcase}} = <Array<{{property.type | uppercamelcase}}>>res;
             {{property | lowercamelcase}}.forEach(element => {
-              element.valor=JSON.stringify(element);
-              //Object.defineProperty(element, 'valor',
-              //Object.getOwnPropertyDescriptor(element, 'Nombre'));
+              element.valor = JSON.stringify(element);
+              // Object.defineProperty(element, 'valor',
+              // Object.getOwnPropertyDescriptor(element, 'Nombre'));
             });
           }
           this.form{{entity | uppercamelcase}}.campos[ this.getIndexForm('{{property | uppercamelcase}}') ].opciones = {{property | lowercamelcase}};
@@ -61,9 +61,7 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
   {% endif %}
   {%endfor%}
 
-  
-
-  getIndexForm(nombre:String): number {
+  getIndexForm(nombre: String): number {
     for (let index = 0; index < this.form{{entity | uppercamelcase}}.campos.length; index++) {
       const element = this.form{{entity | uppercamelcase}}.campos[index];
       if (element.nombre === nombre) {
@@ -171,3 +169,4 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
   }
 
 }
+

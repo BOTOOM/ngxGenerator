@@ -50,4 +50,5 @@ export const Config = {
             CLIENT_SECRET: 'lrVuDATX1o8TfXxz_jrEzBA2iIoa',
         },
     },
-};
+}
+

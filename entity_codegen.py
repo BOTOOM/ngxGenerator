@@ -45,6 +45,14 @@ def main(entity,debug=False):
             temp += t.capitalize()
         return temp
 
+    def kebab_case(n):
+        x=n.name.split("_")
+        temp = ""
+        temp += x[0].lower()
+        for t in x[1:] :
+            temp += "-"+t
+        return temp
+
     def is_entity(n):
         """
         Test to prove if some type is an entity
@@ -196,6 +204,8 @@ def main(entity,debug=False):
     jinja_env.tests['entity'] = is_entity
 
     jinja_env.filters['formtype'] = formtype
+
+    jinja_env.filters['kebabcase'] = kebab_case
 
     jinja_env.filters['htmltype'] = htmltype
 
