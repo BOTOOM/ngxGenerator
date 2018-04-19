@@ -49,3 +49,13 @@ entity rol_participante_sesion  {
 	Activo            :bool
 	Numero_Orden       :integer
 }
+
+
+entity info_basica  {
+	id                :integer[]
+	Nombre            :string[]
+	Descripcion       :string
+	Codigo_Abreviacion :string
+	tipo_sesion       :tipo_sesion[]
+	Sesion				:sesion
+}

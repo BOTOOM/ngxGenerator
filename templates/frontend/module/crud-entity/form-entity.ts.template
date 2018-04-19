@@ -17,6 +17,8 @@ export let FORM_{{entity.name | upper}} = {
         tipo: '{{property.type | htmltype}}',
         {% if property is entity %}
         opciones: [],
+        {% elif property.array %}
+        opciones: [{valor: 'options'}],
         {% endif %}
     },
     {% endfor %}

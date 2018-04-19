@@ -42,18 +42,11 @@
             </div>
 
             <!-- checkbox -->
-            <div *ngSwitchCase="'checkbox'">
-              <div *ngFor="let item of c.opciones" class="form-check">
-                <label class="row custom-control custom-radio">
-                  <input type="radio" checked class="custom-control-input" name="{{c.nombre}}" [value]="item" [(ngModel)]="c.valor" [ngModelOptions]="{standalone: true}"
-                    checked="{{isEqual(item.Id, c.valor.Id)}}u">{{isEqual(item.Id, c.valor.Id)}}
-                  <span class="custom-control-indicator">
-                  </span>
-                  <span class="custom-control-description">
-                    {{item.valor}}
-                  </span>
-                </label>
-              </div>
+            <div *ngSwitchCase="'checkbox'" class="form-group validation-checkboxes" >
+              <input type="checkbox" class="customised-control-input"
+              [disabled]="c.deshabilitar"
+              [checked]="c.valor"
+              (change)="c.valor = !c.valor"> {{c.nombre}}?
             </div>
 
             <!-- date material -->
@@ -67,6 +60,13 @@
             <!-- select -->
             <select *ngSwitchCase="'select'" [(ngModel)]="c.valor.Id" (ngModelChange)="validCampo(c)" class="{{c.clase}}" [ngModelOptions]="{standalone: true}">
               <option class="{{c.clase}}" *ngFor="let item of c.opciones" [ngValue]="item.Id" [selected]="c.valor.Id === item.Id">
+                {{item.valor}}
+              </option>
+            </select>
+
+            <!-- select multiple-->
+            <select multiple *ngSwitchCase="'selectmultiple'" [(ngModel)]="c.valor" (ngModelChange)="validCampo(c)" class="{{c.clase}} " [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let item of c.opciones" [ngValue]="item" [selected]="c.valor === item">
                 {{item.valor}}
               </option>
             </select>
@@ -131,18 +131,11 @@
           </div>
 
           <!-- checkbox -->
-          <div *ngSwitchCase="'checkbox'">
-            <div *ngFor="let item of c.opciones" class="form-check">
-              <label class="row custom-control custom-radio">
-                <input type="radio" checked class="custom-control-input" name="{{c.nombre}}" [value]="item" [(ngModel)]="c.valor" [ngModelOptions]="{standalone: true}"
-                  checked="{{isEqual(item.Id, c.valor.Id)}}u">{{isEqual(item.Id, c.valor.Id)}}
-                <span class="custom-control-indicator">
-                </span>
-                <span class="custom-control-description">
-                  {{item.valor}}
-                </span>
-              </label>
-            </div>
+          <div *ngSwitchCase="'checkbox'" class="form-group validation-checkboxes" >
+            <input type="checkbox" class="customised-control-input"
+             [disabled]="c.deshabilitar"
+             [checked]="c.valor"
+             (change)="c.valor = !c.valor"> {{c.nombre}}?
           </div>
 
 
@@ -158,6 +151,13 @@
             <option class="{{c.clase}}" *ngFor="let item of c.opciones" [ngValue]="item.Id" [selected]="c.valor.Id === item.Id">
               {{item.valor}}
 
+            </option>
+          </select>
+
+          <!-- select multiple-->
+          <select multiple *ngSwitchCase="'selectmultiple'" [(ngModel)]="c.valor" (ngModelChange)="validCampo(c)" class="{{c.clase}} " [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let item of c.opciones" [ngValue]="item" [selected]="c.valor === item">
+              {{item.valor}}
             </option>
           </select>
 
@@ -214,18 +214,11 @@
           </div>
 
           <!-- checkbox -->
-          <div *ngSwitchCase="'checkbox'">
-            <div *ngFor="let item of c.opciones" class="form-check">
-              <label class="row custom-control custom-radio">
-                <input type="radio" checked class="custom-control-input" name="{{c.nombre}}" [value]="item" [(ngModel)]="c.valor" [ngModelOptions]="{standalone: true}"
-                  checked="{{isEqual(item.Id, c.valor.Id)}}u">{{isEqual(item.Id, c.valor.Id)}}
-                <span class="custom-control-indicator">
-                </span>
-                <span class="custom-control-description">
-                  {{item.valor}}
-                </span>
-              </label>
-            </div>
+          <div *ngSwitchCase="'checkbox'" class="form-group validation-checkboxes" >
+            <input type="checkbox" class="customised-control-input"
+             [disabled]="c.deshabilitar"
+             [checked]="c.valor"
+             (change)="c.valor = !c.valor"> {{c.nombre}}?
           </div>
 
           <!-- date material -->
@@ -241,6 +234,13 @@
             <option class="{{c.clase}}" *ngFor="let item of c.opciones" [ngValue]="item.Id" [selected]="c.valor.Id === item.Id">
               {{item.valor}}
 
+            </option>
+          </select>
+
+          <!-- select multiple-->
+          <select multiple *ngSwitchCase="'selectmultiple'" [(ngModel)]="c.valor" (ngModelChange)="validCampo(c)" class="{{c.clase}} " [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let item of c.opciones" [ngValue]="item" [selected]="c.valor === item">
+              {{item.valor}}
             </option>
           </select>
 
@@ -309,21 +309,6 @@
             </div>
           </div>
 
-          <!-- checkbox -->
-          <div *ngSwitchCase="'checkbox'">
-            <div *ngFor="let item of c.opciones" class="form-check">
-              <label class="row custom-control custom-radio">
-                <input type="radio" checked class="custom-control-input" name="{{c.nombre}}" [value]="item" [(ngModel)]="c.valor" [ngModelOptions]="{standalone: true}"
-                  checked="{{isEqual(item.Id, c.valor.Id)}}u">{{isEqual(item.Id, c.valor.Id)}}
-                <span class="custom-control-indicator">
-                </span>
-                <span class="custom-control-description">
-                  {{item.valor}}
-                </span>
-              </label>
-            </div>
-          </div>
-
           <!-- date material -->
 
           <mat-form-field *ngSwitchCase="'mat-date'">
@@ -335,6 +320,13 @@
           <!-- select -->
           <select *ngSwitchCase="'select'" [(ngModel)]="c.valor" (ngModelChange)="validCampo(c)" class="{{c.clase}} " [ngModelOptions]="{standalone: true}">
             <option class="{{c.clase}}" *ngFor="let item of c.opciones" [ngValue]="item" [selected]="c.valor === item">
+              {{item.valor}}
+            </option>
+          </select>
+
+           <!-- select multiple-->
+          <select multiple *ngSwitchCase="'selectmultiple'" [(ngModel)]="c.valor" (ngModelChange)="validCampo(c)" class="{{c.clase}} " [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let item of c.opciones" [ngValue]="item" [selected]="c.valor === item">
               {{item.valor}}
             </option>
           </select>

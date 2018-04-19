@@ -6,9 +6,9 @@ import { {{property | uppercamelcase}} } from './{{ property.name | lower}}';
 export class {{entity | uppercamelcase}} {
   {% for property in entity.properties %}
   {% if property is entity %}
-  {{property | uppercamelcase}}: {{property.type | uppercamelcase}};
+  {{property | uppercamelcase}}: {% if property.array %}Array<{{property.type | uppercamelcase}}>{% else %}{{property.type | uppercamelcase}}{% endif %};
   {% else %}
-  {{property | uppercamelcase}}: {{property.type|angulartype}};
+  {{property | uppercamelcase}}: {% if property.array %}Array<{{property.type|angulartype}}>{% else %}{{property.type|angulartype}}{% endif %};
   {% endif %}
 	{% endfor %}
 }

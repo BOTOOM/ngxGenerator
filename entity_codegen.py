@@ -87,6 +87,8 @@ def main(entity,debug=False):
         }.get(s.name, s.name)
 
     def formtype(s):
+        if s.array:
+            return 'selectmultiple'
         if is_entity(s):
             return 'select'
         return {
