@@ -16,6 +16,7 @@ export let FORM_{{entity.name | upper}} = {
         requerido: true,
         tipo: '{{property.type | htmltype}}',
         {% if property is entity %}
+        // key: 'Name',
         opciones: [],
         {% elif property.array %}
         opciones: [{valor: 'options'}],
