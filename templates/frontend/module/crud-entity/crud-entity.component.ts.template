@@ -49,11 +49,6 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
         .subscribe(res => {
           if (res !== null) {
             {{property | lowercamelcase}} = <Array<{{property.type | uppercamelcase}}>>res;
-            {{property | lowercamelcase}}.forEach(element => {
-              element.valor = JSON.stringify(element);
-              // Object.defineProperty(element, 'valor',
-              // Object.getOwnPropertyDescriptor(element, 'Nombre'));
-            });
           }
           this.form{{entity | uppercamelcase}}.campos[ this.getIndexForm('{{property | uppercamelcase}}') ].opciones = {{property | lowercamelcase}};
         });

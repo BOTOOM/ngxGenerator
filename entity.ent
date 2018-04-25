@@ -1,4 +1,4 @@
-project name sesiones
+project name persona
 
 type integer
 type string
@@ -6,27 +6,7 @@ type bool
 type time
 
 
-entity participante_sesion  {
-	id:integer
-	sesion:sesion
-	rol_participante_sesion:rol_participante_sesion
-	ente:integer
-}
-
-entity sesion  {
-	id                 :integer
-	Descripcion        :string
-	Fecha_Creacion      :time
-	Fecha_Modificacion  :time
-	Fecha_Inicio        :time
-	Fecha_Fin           :time
-	Periodo            :integer
-	Recurrente         :bool
-	Numero_Recurrencias :integer
-	tipo_sesion         :tipo_sesion
-}
-
-entity tipo_sesion  {
+entity genero  {
 	id                :integer
 	Nombre            :string
 	Descripcion       :string
@@ -35,13 +15,7 @@ entity tipo_sesion  {
 	Numero_Orden       :integer
 }
 
-entity Relacion_sesiones  {
-	id          :integer
-	sesion_Padre :sesion
-	sesion_Hijo  :sesion
-}
-
-entity rol_participante_sesion  {
+entity grupo_etnico  {
 	id                :integer
 	Nombre            :string
 	Descripcion       :string
@@ -50,12 +24,47 @@ entity rol_participante_sesion  {
 	Numero_Orden       :integer
 }
 
-
-entity info_basica  {
-	id                :integer[]
-	Nombre            :string[]
+entity estado_civil  {
+	id                :integer
+	Nombre            :string
 	Descripcion       :string
 	Codigo_Abreviacion :string
-	tipo_sesion       :tipo_sesion[]
-	Sesion				:sesion
+	Activo            :bool
+	Numero_Orden       :integer
+}
+
+entity tipo_discapacidad  {
+	id                :integer
+	Nombre            :string
+	Descripcion       :string
+	Codigo_Abreviacion :string
+	Activo            :bool
+	Numero_Orden       :integer
+}
+
+entity persona {
+	id				:integer
+	Primer_Nombre    :string    
+	Segundo_Nombre   :string    
+	Primer_Apellido  :string    
+	Segundo_Apellido :string    
+	Fecha_Nacimiento :time
+	Usuario         :string   
+	Ente            :integer   
+	Foto  			:string
+}
+
+entity info_persona {
+	id				:integer
+	Primer_Nombre    :string    
+	Segundo_Nombre   :string    
+	Primer_Apellido  :string    
+	Segundo_Apellido :string    
+	Fecha_Nacimiento :time
+	Usuario         :string   
+	Foto  			:string
+	tipo_discapacidad	:tipo_discapacidad[]
+	estado_civil	:estado_civil
+	grupo_etnico	:grupo_etnico
+	genero	:genero
 }
