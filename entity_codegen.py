@@ -175,6 +175,8 @@ def main(entity,debug=False):
     """
 
     srcgen_folder_frontend_model = join(this_folder, 'srcgen/project/src/app/@core/data/models')
+    if not exists(srcgen_folder_frontend_model):
+        mkdir(srcgen_folder_frontend_model)    
 
     srcgen_folder_frontend_services = join(this_folder, 'srcgen/project/src/app/@core/data')
 
@@ -185,6 +187,8 @@ def main(entity,debug=False):
     srcgen_folder_frontend_conf = join(this_folder, 'srcgen/project/src/app')
  
     srcgen_folder_frontend_translate = join(this_folder, 'srcgen/project/src/assets/i18n')
+    if not exists(srcgen_folder_frontend_translate):
+        mkdir(srcgen_folder_frontend_translate)    
 
     # Initialize template engine.
     jinja_env = jinja2.Environment(

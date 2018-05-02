@@ -5,7 +5,6 @@ type string
 type bool
 type time
 
-
 entity genero  {
 	id                :integer
 	Nombre            :string
@@ -55,16 +54,12 @@ entity persona {
 }
 
 entity info_persona {
-	id				:integer
 	Primer_Nombre    :string    
 	Segundo_Nombre   :string    
 	Primer_Apellido  :string    
 	Segundo_Apellido :string    
 	Fecha_Nacimiento :time
-	Usuario         :string   
 	Foto  			:string
-	tipo_discapacidad	:tipo_discapacidad[]
 	estado_civil	:estado_civil
-	grupo_etnico	:grupo_etnico
 	genero	:genero
 }
