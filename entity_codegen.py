@@ -116,6 +116,15 @@ def main(entity,debug=False):
                     types.append(p.type)
         return types
 
+    def listAllAtributes(entity_model):
+        list=[]
+        for entity in entity_model.entities:
+            if entity.name not in list:
+                    list.append(entity.name)
+            for p in entity.properties:
+                if p.name not in list:
+                    list.append(p.name)
+        return list
     
     # Create output folder for backend
     srcgen_folder = join(this_folder, 'srcgen')
@@ -269,9 +278,9 @@ def main(entity,debug=False):
     # translateTemplate
     template = jinja_env.get_template('templates/frontend/translate/lang.json.template')
     with open(join(srcgen_folder_frontend_translate, "es.json"), 'w') as f:
-            f.write(template.render(entity_model=entity_model))
+            f.write(template.render(entity_model=entity_model,  listAllAtributes=listAllAtributes))
     with open(join(srcgen_folder_frontend_translate, "en.json"), 'w') as f:
-            f.write(template.render(entity_model=entity_model))
+            f.write(template.render(entity_model=entity_model, listAllAtributes=listAllAtributes))
 
     # Models
     template = jinja_env.get_template('templates/frontend/models/entity.ts.template')

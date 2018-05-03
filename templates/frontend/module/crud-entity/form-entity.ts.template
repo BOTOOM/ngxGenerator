@@ -11,8 +11,8 @@ export let FORM_{{entity.name | upper}} = {
         etiqueta: '{{property | formtype}}',
         claseGrid: 'col-6',
         nombre: '{{property | uppercamelcase}}',
-        label: '{{property | uppercamelcase}}*:',
-        placeholder: 'Ej. {{property | uppercamelcase}}',
+        label_i18n: '{{property.name | lower}}',
+        placeholder_i18n: '{{property.name | lower}}',
         requerido: true,
         tipo: '{{property.type | htmltype}}',
         {% if property is entity %}

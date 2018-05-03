@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { {{entity_model | uppercamelcase}}Service } from '../../../@core/data/{{entity_model.name | lower}}.service';
 import { FORM_{{entity.name | upper}} } from './form-{{entity.name | lower}}';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
@@ -32,14 +33,31 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
   reg{{entity | uppercamelcase}}: any;
   clean: boolean;
 
-  constructor(private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
+  constructor(private translate: TranslateService, private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
     this.form{{entity | uppercamelcase}} = FORM_{{entity.name | upper}};
+    this.construirForm();
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.construirForm();
+    });
     {% for property in entity.properties %}
     {% if property is entity %}
     this.loadOptions{{property | uppercamelcase}}();
     {% endif %}
     {%endfor%}
    }
+
+  construirForm() {
+    this.form{{entity | uppercamelcase}}.titulo = this.translate.instant('GLOBAL.{{entity.name | lower}}');
+    this.form{{entity | uppercamelcase}}.btn = this.translate.instant('GLOBAL.guardar');
+    for (let i = 0; i < this.form{{entity | uppercamelcase}}.campos.length; i++) {
+      this.form{{entity | uppercamelcase}}.campos[i].label = this.translate.instant('GLOBAL.' + this.form{{entity | uppercamelcase}}.campos[i].label_i18n);
+      this.form{{entity | uppercamelcase}}.campos[i].placeholder = this.translate.instant('GLOBAL.placeholder_' + this.form{{entity | uppercamelcase}}.campos[i].label_i18n);
+    }
+  }
+
+  useLanguage(language: string) {
+    this.translate.use(language);
+  }
 
   {% for property in entity.properties %}
   {% if property is entity %}
