@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { {{entity_model | uppercamelcase}}Service } from '../../../@core/data/{{entity_model.name | lower}}.service';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
@@ -14,39 +15,51 @@ export class List{{entity | uppercamelcase}}Component implements OnInit {
   uid: number;
   cambiotab: boolean = false;
   config: ToasterConfig;
-  settings = {
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    mode: 'external',
-    columns: {
-      {% for property in entity.properties %}
-      {{property | uppercamelcase}}: {
-        title: '{{property | uppercamelcase}}',
-        // type: '{{property.type|angulartype}};',
-        valuePrepareFunction: (value) => {
-          return value;
-        },
-      },
-      {% endfor %}
-    },
-  };
+  settings: any;
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
+  constructor(private translate: TranslateService, private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
     this.loadData();
+    this.cargarCampos();
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.cargarCampos();
+    });
+  }
+
+  cargarCampos() {
+    this.settings = {
+      add: {
+        addButtonContent: '<i class="nb-plus"></i>',
+        createButtonContent: '<i class="nb-checkmark"></i>',
+        cancelButtonContent: '<i class="nb-close"></i>',
+      },
+      edit: {
+        editButtonContent: '<i class="nb-edit"></i>',
+        saveButtonContent: '<i class="nb-checkmark"></i>',
+        cancelButtonContent: '<i class="nb-close"></i>',
+      },
+      delete: {
+        deleteButtonContent: '<i class="nb-trash"></i>',
+        confirmDelete: true,
+      },
+      mode: 'external',
+      columns: {
+        {% for property in entity.properties %}
+        {{property | uppercamelcase}}: {
+          title: this.translate.instant('GLOBAL.{{property.name | lower}}'),
+          // type: '{{property.type|angulartype}};',
+          valuePrepareFunction: (value) => {
+            return value;
+          },
+        },
+        {% endfor %}
+      },
+    };
+  }
+
+  useLanguage(language: string) {
+    this.translate.use(language);
   }
 
   loadData(): void {
@@ -99,7 +112,7 @@ export class List{{entity | uppercamelcase}}Component implements OnInit {
   }
 
   selectTab(event): void {
-    if (event.tabTitle === 'Lista') {
+    if (event.tabTitle === this.translate.instant('GLOBAL.lista')) {
       this.cambiotab = false;
     } else {
       this.cambiotab = true;

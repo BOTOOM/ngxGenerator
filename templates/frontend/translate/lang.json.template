@@ -13,7 +13,7 @@
       "lista_{{entity.name | lower}}": "lista {{entity.name | lower}}",
       "crud_{{entity.name | lower}}": "Crud {{entity.name | lower}}"
     },
-    {% endfor %}
+    {% endfor %}  
     "auth": {
       "auth": "Autenticacion",
       "login": "Login",
@@ -21,5 +21,22 @@
       "request-password": "Recuperar Password",
       "reset-password": "Reiniciar Password"
     }
+  },
+  "GLOBAL": {
+    {% for property in listAllAtributes(entity_model) %}
+    "{{property | lower}}": "{{property | lower}}",
+    "placeholder_{{property | lower}}": "ej: {{property | lower}}",
+    {% endfor %}
+    "aceptar": "aceptar",
+    "cancelar": "cancelar",
+    "salir": "salir",
+    "eliminar": "eliminar",
+    "actualizar": "actualizar",
+    "crear": "crear",
+    "registrar": "registrar",
+    "guardar" : "guardar",
+    "formulario": "formulario",
+    "lista": "lista",
+    "regresar": "regresar"
   }
 }
