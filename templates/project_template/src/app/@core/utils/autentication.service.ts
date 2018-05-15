@@ -17,8 +17,9 @@ export class AutenticationService {
         this.setting_basic = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'authorization': 'Basic ' + btoa(Config.LOCAL.TOKEN.CLIENTE_ID + ':'
-                    + Config.LOCAL.TOKEN.CLIENT_SECRET),
+                'authorization': 'Basic ' + btoa(Config.LOCAL.TOKEN.CLIENTE_ID + ':',
+                    //    + Config.LOCAL.TOKEN.CLIENT_SECRET
+                ),
                 'cache-control': 'no-cache',
             }),
         }
@@ -36,11 +37,11 @@ export class AutenticationService {
     public getToken() {
         if (window.sessionStorage.getItem('code') !== null &&
             window.sessionStorage.getItem('id_token') === null) {
-            let url = Config.LOCAL.TOKEN.REFRESH_TOKEN;
+            let url = ''; // Config.LOCAL.TOKEN.REFRESH_TOKEN;
             const dato = {};
             url += '?grant_type=authorization_code';
             url += '&code=' + window.sessionStorage.getItem('code');
-            url += '&redirect_uri=' + Config.LOCAL.TOKEN.REDIRECT_URL;
+            url += '&redirect_uri=' + window.location.href;
             this.post(url, dato, this.setting_basic).subscribe(
                 data => {
                     for (const i in data) {
@@ -127,7 +128,7 @@ export class AutenticationService {
         }
         let url = this.params.AUTORIZATION_URL + '?' +
             'client_id=' + encodeURIComponent(this.params.CLIENTE_ID) + '&' +
-            'redirect_uri=' + encodeURIComponent(this.params.REDIRECT_URL) + '&' +
+            'redirect_uri=' + encodeURIComponent(window.location.href) + '&' +
             'response_type=' + encodeURIComponent(this.params.RESPONSE_TYPE) + '&' +
             'scope=' + encodeURIComponent(this.params.SCOPE);
         if (this.params.nonce) {
@@ -139,10 +140,10 @@ export class AutenticationService {
 
     refresh() {
         this.params = Config.LOCAL.TOKEN;
-        const url = this.params.REFRESH_TOKEN + '?' +
+        const url = ''; // this.params.REFRESH_TOKEN + '?' +
             'grant_type=' + encodeURIComponent('refresh_token') + '&' +
             'refresh_token=' + encodeURIComponent(window.sessionStorage.getItem('refresh_token')) + '&' +
-            'redirect_uri=' + encodeURIComponent(this.params.REDIRECT_URL);
+            'redirect_uri=' + encodeURIComponent(window.location.href);
         const dato = {};
 
         this.post(url, dato, this.setting_basic).subscribe(

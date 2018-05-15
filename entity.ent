@@ -1,4 +1,4 @@
-project name persona
+project name ubicaciones
 
 type integer
 type string
@@ -62,4 +62,55 @@ entity info_persona {
 	Foto  			:string
 	estado_civil	:estado_civil
 	genero	:genero
+}
+
+entity info_caracteristica {
+	grupo_sanguineo	:string
+	rh	:string
+	grupo_etnico	:grupo_etnico
+	tipo_discapacidad	:tipo_discapacidad[]
+	pais_nacimiento	:lugar
+
+}
+
+entity tipo_lugar  {
+	id                :integer
+	Nombre            :string
+	Descripcion       :string
+	Codigo_Abreviacion :string
+	Activo            :bool
+	Numero_Orden       :integer
+}
+
+entity lugar {
+	id	:integer
+	nombre	:string
+	tipo_lugar	:tipo_lugar
+	Activo            :bool
+}
+
+entity lugar_ubicacion {
+	id	:integer
+	lugar	:lugar
+	direccion	:string
+	codigo_postal   :string
+	estrato		:integer
+}
+
+entity tipo_contacto  {
+	id                :integer
+	Nombre            :string
+	Descripcion       :string
+	Codigo_Abreviacion :string
+	Activo            :bool
+	Numero_Orden       :integer
+}
+
+entity informacion_contacto {
+	pais_residencia		:lugar
+	ciudad_residencia	:lugar
+	direccion_residencia	:string
+	estrato_residencia		:integer
+	codigo_postal	:string
+	telefono		:string	
 }
