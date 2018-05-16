@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { List{{entity | uppercamelcase}}Component } from './list-{{entity.name | lower}}.component';
+import { List{{entity.name | uppercamelcase}}Component } from './list-{{entity.name | lower}}.component';
 
-describe('List{{entity | uppercamelcase}}Component', () => {
-  let component: List{{entity | uppercamelcase}}Component;
-  let fixture: ComponentFixture<List{{entity | uppercamelcase}}Component>;
+describe('List{{entity.name | uppercamelcase}}Component', () => {
+  let component: List{{entity.name | uppercamelcase}}Component;
+  let fixture: ComponentFixture<List{{entity.name | uppercamelcase}}Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ List{{entity | uppercamelcase}}Component ],
+      declarations: [ List{{entity.name | uppercamelcase}}Component ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(List{{entity | uppercamelcase}}Component);
+    fixture = TestBed.createComponent(List{{entity.name | uppercamelcase}}Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,2 +1,2 @@
-srcgen
-entity.ent
+*.ent
+*.pyc

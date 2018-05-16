@@ -1,14 +1,13 @@
-
 {% for property in orderTypeEntity(entity.properties) %}
-import { {{property | uppercamelcase}} } from './{{ property.name | lower}}';
+import { {{property.name | uppercamelcase}} } from './{{ property.name | lower}}';
 {%endfor%}
 
-export class {{entity | uppercamelcase}} {
+export class {{entity.name | uppercamelcase}} {
   {% for property in entity.properties %}
   {% if property is entity %}
-  {{property | uppercamelcase}}: {% if property.array %}Array<{{property.type | uppercamelcase}}>{% else %}{{property.type | uppercamelcase}}{% endif %};
+  {{property.name | uppercamelcase}}: {% if property.array %}Array<{{property.type.name | uppercamelcase}}>{% else %}{{property.type.name | uppercamelcase}}{% endif %};
   {% else %}
-  {{property | uppercamelcase}}: {% if property.array %}Array<{{property.type|angulartype}}>{% else %}{{property.type|angulartype}}{% endif %};
+  {{property.name | uppercamelcase}}: {% if property.array %}Array<{{property.type|angulartype}}>{% else %}{{property.type|angulartype}}{% endif %};
   {% endif %}
 	{% endfor %}
 }

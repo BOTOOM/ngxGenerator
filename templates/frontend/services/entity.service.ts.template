@@ -11,7 +11,7 @@ const path = Config.LOCAL.{{entity.name | upper}}_SERVICE;
 
 
 @Injectable()
-export class {{entity|uppercamelcase}}Service {
+export class {{entity.name | uppercamelcase}}Service {
 
     constructor(private http: HttpClient) {
     }
