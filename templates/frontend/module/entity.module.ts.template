@@ -5,6 +5,7 @@ import { {{entity_model | uppercamelcase}}Service } from '../../@core/data/{{ent
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ToasterModule } from 'angular2-toaster';
 import { SharedModule } from '../../shared/shared.module';
+import { Crud{{entity | uppercamelcase}}Component } from './crud-{{entity.name | lower}}/crud-{{entity.name | lower}}.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,9 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   providers: [
     {{entity_model | uppercamelcase}}Service,
+  ],
+  exports: [
+    Crud{{entity | uppercamelcase}}Component,
   ],
 })
 export class {{entity| uppercamelcase}}Module { }
