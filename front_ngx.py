@@ -32,7 +32,7 @@ class front_ngx:
             'integer': SimpleType(None, 'integer'),
             'string':  SimpleType(None, 'string'),
             'time':  SimpleType(None, 'time'),
-            'bool': SimpleType(None, 'boolean'),
+            'bool': SimpleType(None, 'bool'),
             'float': SimpleType(None, 'float')
     }
     entity_mm = metamodel_from_file(join(gen_folder , 'entity.tx'),
