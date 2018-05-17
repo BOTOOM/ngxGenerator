@@ -11,18 +11,18 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {% for entity in entity_model.entities %}
   {
-    title: '{{entity | spacecase}}',
+    title: '{{entity.name  | spacecase}}',
     icon: 'nb-compose',
     link: '/pages/{{entity.name | lower}}',
     key: '{{entity.name | lower}}',
     children: [
       {
-        title: 'Lista {{entity | spacecase}}',
+        title: 'Lista {{entity.name  | spacecase}}',
         link: '/pages/{{entity.name | lower}}/list-{{entity.name | lower}}',
         key: 'lista_{{entity.name | lower}}',
       },
       {
-        title: 'CRUD {{entity | spacecase}}',
+        title: 'CRUD {{entity.name  | spacecase}}',
         link: '/pages/{{entity.name | lower}}/crud-{{entity.name | lower}}',
         key: 'crud_{{entity.name | lower}}',
       },

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngx-{{entity | kebabcase}}-elements',
+  selector: 'ngx-{{entity.name | kebabcase}}-elements',
   template: `<router-outlet></router-outlet>`,
 })
-export class {{entity | uppercamelcase}}Component {
+export class {{entity.name | uppercamelcase}}Component {
 }
 

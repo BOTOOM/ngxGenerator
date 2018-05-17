@@ -1,10 +1,10 @@
 {% for property in orderTypeEntity(entity.properties) %}
-import { {{property | uppercamelcase}} } from './../../../@core/data/models/{{ property.name | lower}}';
+import { {{property.name | uppercamelcase}} } from './../../../@core/data/models/{{ property.name | lower}}';
 {%endfor%}
 
-import { {{entity | uppercamelcase}} } from './../../../@core/data/models/{{entity.name | lower}}';
+import { {{entity.name | uppercamelcase}} } from './../../../@core/data/models/{{entity.name | lower}}';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { {{entity_model | uppercamelcase}}Service } from '../../../@core/data/{{entity_model.name | lower}}.service';
+import { {{entity_model.name | uppercamelcase}}Service } from '../../../@core/data/{{entity_model.name | lower}}.service';
 import { FORM_{{entity.name | upper}} } from './form-{{entity.name | lower}}';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
@@ -12,46 +12,46 @@ import Swal from 'sweetalert2';
 import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
-  selector: 'ngx-crud-{{entity | kebabcase}}',
+  selector: 'ngx-crud-{{entity.name | kebabcase}}',
   templateUrl: './crud-{{entity.name | lower}}.component.html',
   styleUrls: ['./crud-{{entity.name | lower}}.component.scss'],
 })
-export class Crud{{entity | uppercamelcase}}Component implements OnInit {
+export class Crud{{entity.name | uppercamelcase}}Component implements OnInit {
   config: ToasterConfig;
   {{entity.name | lower}}_id: number;
 
   @Input('{{entity.name | lower}}_id')
   set name({{entity.name | lower}}_id: number) {
     this.{{entity.name | lower}}_id = {{entity.name | lower}}_id;
-    this.load{{entity| uppercamelcase}}();
+    this.load{{entity.name | uppercamelcase}}();
   }
 
   @Output() eventChange = new EventEmitter();
 
-  info_{{entity.name| lower}}: {{entity | uppercamelcase}};
-  form{{entity | uppercamelcase}}: any;
-  reg{{entity | uppercamelcase}}: any;
+  info_{{entity.name| lower}}: {{entity.name | uppercamelcase}};
+  form{{entity.name | uppercamelcase}}: any;
+  reg{{entity.name | uppercamelcase}}: any;
   clean: boolean;
 
-  constructor(private translate: TranslateService, private {{entity_model | lowercamelcase}}Service: {{entity_model | uppercamelcase}}Service, private toasterService: ToasterService) {
-    this.form{{entity | uppercamelcase}} = FORM_{{entity.name | upper}};
+  constructor(private translate: TranslateService, private {{entity_model.name | lowercamelcase}}Service: {{entity_model.name | uppercamelcase}}Service, private toasterService: ToasterService) {
+    this.form{{entity.name | uppercamelcase}} = FORM_{{entity.name | upper}};
     this.construirForm();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.construirForm();
     });
     {% for property in entity.properties %}
     {% if property is entity %}
-    this.loadOptions{{property | uppercamelcase}}();
+    this.loadOptions{{property.name | uppercamelcase}}();
     {% endif %}
     {%endfor%}
    }
 
   construirForm() {
-    this.form{{entity | uppercamelcase}}.titulo = this.translate.instant('GLOBAL.{{entity.name | lower}}');
-    this.form{{entity | uppercamelcase}}.btn = this.translate.instant('GLOBAL.guardar');
-    for (let i = 0; i < this.form{{entity | uppercamelcase}}.campos.length; i++) {
-      this.form{{entity | uppercamelcase}}.campos[i].label = this.translate.instant('GLOBAL.' + this.form{{entity | uppercamelcase}}.campos[i].label_i18n);
-      this.form{{entity | uppercamelcase}}.campos[i].placeholder = this.translate.instant('GLOBAL.placeholder_' + this.form{{entity | uppercamelcase}}.campos[i].label_i18n);
+    this.form{{entity.name | uppercamelcase}}.titulo = this.translate.instant('GLOBAL.{{entity.name | lower}}');
+    this.form{{entity.name | uppercamelcase}}.btn = this.translate.instant('GLOBAL.guardar');
+    for (let i = 0; i < this.form{{entity.name | uppercamelcase}}.campos.length; i++) {
+      this.form{{entity.name | uppercamelcase}}.campos[i].label = this.translate.instant('GLOBAL.' + this.form{{entity.name | uppercamelcase}}.campos[i].label_i18n);
+      this.form{{entity.name | uppercamelcase}}.campos[i].placeholder = this.translate.instant('GLOBAL.placeholder_' + this.form{{entity.name | uppercamelcase}}.campos[i].label_i18n);
     }
   }
 
@@ -61,22 +61,22 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
 
   {% for property in entity.properties %}
   {% if property is entity %}
-  loadOptions{{property | uppercamelcase}}(): void {
-    let {{property | lowercamelcase}}: Array<any> = [];
-      this.{{entity_model | lowercamelcase}}Service.get('{{property.type.name | lower}}/?limit=0')
+  loadOptions{{property.name | uppercamelcase}}(): void {
+    let {{property.name  | lowercamelcase}}: Array<any> = [];
+      this.{{entity_model.name  | lowercamelcase}}Service.get('{{property.type.name | lower}}/?limit=0')
         .subscribe(res => {
           if (res !== null) {
-            {{property | lowercamelcase}} = <Array<{{property.type | uppercamelcase}}>>res;
+            {{property.name  | lowercamelcase}} = <Array<{{property.type.name | uppercamelcase}}>>res;
           }
-          this.form{{entity | uppercamelcase}}.campos[ this.getIndexForm('{{property | uppercamelcase}}') ].opciones = {{property | lowercamelcase}};
+          this.form{{entity.name | uppercamelcase}}.campos[ this.getIndexForm('{{property.name | uppercamelcase}}') ].opciones = {{property.name  | lowercamelcase}};
         });
   }
   {% endif %}
   {%endfor%}
 
   getIndexForm(nombre: String): number {
-    for (let index = 0; index < this.form{{entity | uppercamelcase}}.campos.length; index++) {
-      const element = this.form{{entity | uppercamelcase}}.campos[index];
+    for (let index = 0; index < this.form{{entity.name | uppercamelcase}}.campos.length; index++) {
+      const element = this.form{{entity.name | uppercamelcase}}.campos[index];
       if (element.nombre === nombre) {
         return index
       }
@@ -85,12 +85,12 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
   }
 
 
-  public load{{entity| uppercamelcase}}(): void {
+  public load{{entity.name | uppercamelcase}}(): void {
     if (this.{{entity.name | lower}}_id !== undefined && this.{{entity.name | lower}}_id !== 0) {
-      this.{{entity_model | lowercamelcase}}Service.get('{{entity.name | lower}}/?query=id:' + this.{{entity.name | lower}}_id)
+      this.{{entity_model.name  | lowercamelcase}}Service.get('{{entity.name | lower}}/?query=id:' + this.{{entity.name | lower}}_id)
         .subscribe(res => {
           if (res !== null) {
-            this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>res[0];
+            this.info_{{entity.name| lower}} = <{{entity.name | uppercamelcase}}>res[0];
           }
         });
     } else  {
@@ -99,11 +99,11 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
     }
   }
 
-  update{{entity | uppercamelcase}}({{entity | lowercamelcase}}: any): void {
+  update{{entity.name | uppercamelcase}}({{entity.name  | lowercamelcase}}: any): void {
 
     const opt: any = {
       title: 'Update?',
-      text: 'Update {{entity | uppercamelcase}}!',
+      text: 'Update {{entity.name | uppercamelcase}}!',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -112,21 +112,21 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
     Swal(opt)
     .then((willDelete) => {
       if (willDelete.value) {
-        this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>{{entity | lowercamelcase}};
-        this.{{entity_model | lowercamelcase}}Service.put('{{entity.name | lower}}', this.info_{{entity.name| lower}})
+        this.info_{{entity.name| lower}} = <{{entity.name | uppercamelcase}}>{{entity.name | lowercamelcase}};
+        this.{{entity_model.name  | lowercamelcase}}Service.put('{{entity.name | lower}}', this.info_{{entity.name| lower}})
           .subscribe(res => {
-            this.load{{entity| uppercamelcase}}();
+            this.load{{entity.name | uppercamelcase}}();
             this.eventChange.emit(true);
-            this.showToast('info', 'updated', '{{entity | uppercamelcase}} updated');
+            this.showToast('info', 'updated', '{{entity.name | uppercamelcase}} updated');
           });
       }
     });
   }
 
-  create{{entity | uppercamelcase}}({{entity | lowercamelcase}}: any): void {
+  create{{entity.name | uppercamelcase}}({{entity.name  | lowercamelcase}}: any): void {
     const opt: any = {
       title: 'Create?',
-      text: 'Create {{entity | uppercamelcase}}!',
+      text: 'Create {{entity.name | uppercamelcase}}!',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -135,27 +135,27 @@ export class Crud{{entity | uppercamelcase}}Component implements OnInit {
     Swal(opt)
     .then((willDelete) => {
       if (willDelete.value) {
-        this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>{{entity | lowercamelcase}};
-        this.{{entity_model | lowercamelcase}}Service.post('{{entity.name | lower}}', this.info_{{entity.name| lower}})
+        this.info_{{entity.name| lower}} = <{{entity.name | uppercamelcase}}>{{entity.name  | lowercamelcase}};
+        this.{{entity_model.name  | lowercamelcase}}Service.post('{{entity.name | lower}}', this.info_{{entity.name| lower}})
           .subscribe(res => {
-            this.info_{{entity.name| lower}} = <{{entity | uppercamelcase}}>res;
+            this.info_{{entity.name| lower}} = <{{entity.name | uppercamelcase}}>res;
             this.eventChange.emit(true);
-            this.showToast('info', 'created', '{{entity | uppercamelcase}} created');
+            this.showToast('info', 'created', '{{entity.name | uppercamelcase}} created');
           });
       }
     });
   }
 
   ngOnInit() {
-    this.load{{entity| uppercamelcase}}();
+    this.load{{entity.name | uppercamelcase}}();
   }
 
   validarForm(event) {
     if (event.valid) {
       if (this.info_{{entity.name| lower}} === undefined) {
-        this.create{{entity | uppercamelcase}}(event.data.{{entity | uppercamelcase}});
+        this.create{{entity.name | uppercamelcase}}(event.data.{{entity.name | uppercamelcase}});
       } else {
-        this.update{{entity | uppercamelcase}}(event.data.{{entity | uppercamelcase}});
+        this.update{{entity.name | uppercamelcase}}(event.data.{{entity.name | uppercamelcase}});
       }
     }
   }

@@ -1,16 +1,16 @@
 
 export let FORM_{{entity.name | upper}} = {
-    titulo: '{{entity | uppercamelcase}}',
+    titulo: '{{entity.name | uppercamelcase}}',
     tipo_formulario: 'mini',
     btn: 'Guardar',
     alertas: true,
-    modelo: '{{entity | uppercamelcase}}',
+    modelo: '{{entity.name | uppercamelcase}}',
     campos: [
     {% for property in entity.properties %}
     {
         etiqueta: '{{property | formtype}}',
         claseGrid: 'col-6',
-        nombre: '{{property | uppercamelcase}}',
+        nombre: '{{property.name | uppercamelcase}}',
         label_i18n: '{{property.name | lower}}',
         placeholder_i18n: '{{property.name | lower}}',
         requerido: true,

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { Crud{{entity | uppercamelcase}}Component } from './crud-{{entity.name | lower}}.component';
+import { Crud{{entity.name | uppercamelcase}}Component } from './crud-{{entity.name | lower}}.component';
 
-describe('Crud{{entity | uppercamelcase}}Component', () => {
-  let component: Crud{{entity | uppercamelcase}}Component;
-  let fixture: ComponentFixture<Crud{{entity | uppercamelcase}}Component>;
+describe('Crud{{entity.name | uppercamelcase}}Component', () => {
+  let component: Crud{{entity.name | uppercamelcase}}Component;
+  let fixture: ComponentFixture<Crud{{entity.name | uppercamelcase}}Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ Crud{{entity | uppercamelcase}}Component ],
+      declarations: [ Crud{{entity.name | uppercamelcase}}Component ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Crud{{entity | uppercamelcase}}Component);
+    fixture = TestBed.createComponent(Crud{{entity.name | uppercamelcase}}Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

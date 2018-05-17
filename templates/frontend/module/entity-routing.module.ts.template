@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { {{entity | uppercamelcase}}Component } from './{{entity.name| lower}}.component';
-import { List{{entity | uppercamelcase}}Component } from './list-{{entity.name| lower}}/list-{{entity.name| lower}}.component';
-import { Crud{{entity | uppercamelcase}}Component } from './crud-{{entity.name| lower}}/crud-{{entity.name| lower}}.component';
+import { {{entity.name | uppercamelcase}}Component } from './{{entity.name| lower}}.component';
+import { List{{entity.name | uppercamelcase}}Component } from './list-{{entity.name| lower}}/list-{{entity.name| lower}}.component';
+import { Crud{{entity.name | uppercamelcase}}Component } from './crud-{{entity.name| lower}}/crud-{{entity.name| lower}}.component';
 
 
 
 const routes: Routes = [{
   path: '',
-  component: {{entity | uppercamelcase}}Component,
+  component: {{entity.name | uppercamelcase}}Component,
   children: [{
     path: 'list-{{entity.name| lower}}',
-    component: List{{entity | uppercamelcase}}Component,
+    component: List{{entity.name | uppercamelcase}}Component,
   }, {
     path: 'crud-{{entity.name| lower}}',
-    component: Crud{{entity | uppercamelcase}}Component,
+    component: Crud{{entity.name | uppercamelcase}}Component,
   }],
 }];
 
@@ -27,11 +27,11 @@ const routes: Routes = [{
   ],
 })
 
-export class {{entity | uppercamelcase}}RoutingModule { }
+export class {{entity.name | uppercamelcase}}RoutingModule { }
 
 export const routedComponents = [
-  {{entity | uppercamelcase}}Component,
-  List{{entity | uppercamelcase}}Component,
-  Crud{{entity | uppercamelcase}}Component,
+  {{entity.name | uppercamelcase}}Component,
+  List{{entity.name | uppercamelcase}}Component,
+  Crud{{entity.name | uppercamelcase}}Component,
 ];
 

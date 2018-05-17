@@ -15,7 +15,7 @@ const routes: Routes = [{
   {% for entity in entity_model.entities %}
     {
     path: '{{entity.name | lower}}',
-    loadChildren: './{{entity.name | lower}}/{{entity.name | lower}}.module#{{entity | uppercamelcase}}Module',
+    loadChildren: './{{entity.name | lower}}/{{entity.name | lower}}.module#{{entity.name | uppercamelcase}}Module',
     },
     {% endfor %}
     {

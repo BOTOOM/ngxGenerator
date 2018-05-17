@@ -1,29 +1,6 @@
 project name ubicaciones
 
-type integer
-type string
-type bool
-type time
-
-entity genero  {
-	id                :integer
-	Nombre            :string
-	Descripcion       :string
-	Codigo_Abreviacion :string
-	Activo            :bool
-	Numero_Orden       :integer
-}
-
 entity grupo_etnico  {
-	id                :integer
-	Nombre            :string
-	Descripcion       :string
-	Codigo_Abreviacion :string
-	Activo            :bool
-	Numero_Orden       :integer
-}
-
-entity estado_civil  {
 	id                :integer
 	Nombre            :string
 	Descripcion       :string
@@ -39,29 +16,6 @@ entity tipo_discapacidad  {
 	Codigo_Abreviacion :string
 	Activo            :bool
 	Numero_Orden       :integer
-}
-
-entity persona {
-	id				:integer
-	Primer_Nombre    :string    
-	Segundo_Nombre   :string    
-	Primer_Apellido  :string    
-	Segundo_Apellido :string    
-	Fecha_Nacimiento :time
-	Usuario         :string   
-	Ente            :integer   
-	Foto  			:string
-}
-
-entity info_persona {
-	Primer_Nombre    :string    
-	Segundo_Nombre   :string    
-	Primer_Apellido  :string    
-	Segundo_Apellido :string    
-	Fecha_Nacimiento :time
-	Foto  			:string
-	estado_civil	:estado_civil
-	genero	:genero
 }
 
 entity info_caracteristica {
@@ -87,30 +41,4 @@ entity lugar {
 	nombre	:string
 	tipo_lugar	:tipo_lugar
 	Activo            :bool
-}
-
-entity lugar_ubicacion {
-	id	:integer
-	lugar	:lugar
-	direccion	:string
-	codigo_postal   :string
-	estrato		:integer
-}
-
-entity tipo_contacto  {
-	id                :integer
-	Nombre            :string
-	Descripcion       :string
-	Codigo_Abreviacion :string
-	Activo            :bool
-	Numero_Orden       :integer
-}
-
-entity informacion_contacto {
-	pais_residencia		:lugar
-	ciudad_residencia	:lugar
-	direccion_residencia	:string
-	estrato_residencia		:integer
-	codigo_postal	:string
-	telefono		:string	
 }
