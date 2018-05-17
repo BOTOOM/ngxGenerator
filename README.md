@@ -66,11 +66,6 @@ Sesiones project in file "entity.ent":
 
     project name sesiones
 
-    type integer
-    type string
-    type bool
-    type time
-
     entity info_basica  {
       id                :integer
       Nombres            :string[]
@@ -91,5 +86,11 @@ Sesiones project in file "entity.ent":
     
 Usage:
 
-      python entity_codegen.py entity.ent
+Pass file in command
+
+      python main.py entity.ent
+
+pass file selecting folder
+
+      python main.py
 
