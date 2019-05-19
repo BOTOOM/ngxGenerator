@@ -1,4 +1,11 @@
-# Generate projects in Base a grammar simple definiton
+# Generardor de proyectos en Base una definición gramatical simple
+
+se nececitan las siguientes librerias de python:
+- tkinter
+- textx
+- jinja2
+
+_**es necesario python 3**_
 
 /*
   Entity DSL grammar.
