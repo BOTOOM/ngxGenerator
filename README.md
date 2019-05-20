@@ -7,6 +7,8 @@ se nececitan las siguientes librerias de python:
 
 _**es necesario python 3**_
 
+### El proyecto es generado actualmente en angular 6
+
 /*
   Entity DSL grammar.
 */
