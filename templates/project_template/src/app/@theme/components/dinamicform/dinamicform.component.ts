@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'ngx-dinamicform',
@@ -14,11 +15,14 @@ export class DinamicformComponent implements OnInit, OnChanges {
   @Input('modeloData') modeloData: any;
   @Input('clean') clean: boolean;
   @Output('result') result: EventEmitter<any> = new EventEmitter();
+  @Output('resultAux') resultAux: EventEmitter<any> = new EventEmitter();
   @Output('resultSmart') resultSmart: EventEmitter<any> = new EventEmitter();
   @Output('interlaced') interlaced: EventEmitter<any> = new EventEmitter();
+  @Output('percentage') percentage: EventEmitter<any> = new EventEmitter();
   data: any;
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Date>;
-  constructor() {
+
+  constructor(private sanitization: DomSanitizer) {
     this.data = {
       valid: true,
       data: {},
@@ -40,20 +44,45 @@ export class DinamicformComponent implements OnInit, OnChanges {
           this.normalform.campos.forEach(element => {
             for (const i in this.modeloData) {
               if (this.modeloData.hasOwnProperty(i)) {
-                if (i === element.nombre) {
-                  if (element.etiqueta === 'input' && element.tipo === 'date') {
-                    element.valor = (new Date(this.modeloData[i])).toISOString().substring(0, 10);
-                  } else {
-                    element.valor = this.modeloData[i];
-                    this.validCampo(element);
+                if (i === element.nombre && this.modeloData[i] !== null) {
+                  switch (element.etiqueta) {
+                    case 'selectmultiple':
+                      element.valor = [];
+                      if (this.modeloData[i].length > 0) {
+                        this.modeloData[i].forEach((e1) => element.opciones.forEach((e2) => {
+                          if (e1.Id === e2.Id) {
+                            element.valor.push(e2);
+                          }
+                        }));
+                      }
+                      break;
+                    case 'select':
+                      if (element.hasOwnProperty('opciones')) {
+                        element.opciones.forEach((e1) => {
+                          if (this.modeloData[i].Id !== null) {
+                            if (e1.Id === this.modeloData[i].Id) {
+                              element.valor = e1;
+                            }
+                          }
+                        });
+                      }
+                      break;
+                    case 'mat-date':
+                      element.valor = new Date(this.modeloData[i]);
+                      break;
+                    case 'file':
+                      element.url = this.cleanURL(this.modeloData[i]);
+                      element.urlTemp = this.modeloData[i];
+                      break;
+                    default:
+                      element.valor = this.modeloData[i];
                   }
-                  if (element.etiqueta === 'mat-date') {
-                    element.valor = new Date(this.modeloData[i]);
-                  }
+                  this.validCampo(element);
                 }
               }
             }
           });
+          this.setPercentage()
         }
       }
     }
@@ -61,12 +90,31 @@ export class DinamicformComponent implements OnInit, OnChanges {
       this.clearForm();
       this.clean = false;
     }
+  }
 
+  download(url, title, w, h) {
+    const left = (screen.width / 2) - (w / 2);
+    const top = (screen.height / 2) - (h / 2);
+    window.open(url, title, 'toolbar=no,' +
+      'location=no, directories=no, status=no, menubar=no,' +
+      'scrollbars=no, resizable=no, copyhistory=no, ' +
+      'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
   }
 
   onChange(event, c) {
-    c.valor = event.srcElement.files[0];
-    this.validCampo(c);
+    console.info(c.valor);
+    if (c.valor !== undefined) {
+      c.urlTemp = URL.createObjectURL(event.srcElement.files[0])
+      c.url = this.cleanURL(c.urlTemp);
+      c.valor = event.srcElement.files[0];
+      console.info(c);
+      this.validCampo(c);
+      c.File = event.srcElement.files[0];
+    }
+  }
+
+  cleanURL(oldURL: string): SafeResourceUrl {
+    return this.sanitization.bypassSecurityTrustUrl(oldURL);
   }
 
   ngOnInit() {
@@ -96,12 +144,16 @@ export class DinamicformComponent implements OnInit, OnChanges {
 
   validCampo(c): boolean {
 
-    if (c.requerido && (c.valor === '' || c.valor === null || c.valor === undefined ||
-    (JSON.stringify(c.valor) === '{}' && c.etiqueta !== 'file')  || JSON.stringify(c.valor) === '[]')) {
-        c.alerta = '** Debe llenar este campo';
-        c.clase = 'form-control form-control-danger';
-        return false;
-      }
+    if (c.etiqueta === 'file') {
+      console.info((c.etiqueta === 'file' && c.valor.name === undefined));
+    }
+    if (c.requerido && ((c.valor === '' && c.etiqueta !== 'file') || c.valor === null || c.valor === undefined ||
+      (JSON.stringify(c.valor) === '{}' && c.etiqueta !== 'file') || JSON.stringify(c.valor) === '[]')
+      || ((c.etiqueta === 'file' && c.valor.name === undefined) && (c.etiqueta === 'file' && c.urlTemp === undefined))) {
+      c.alerta = '** Debe llenar este campo';
+      c.clase = 'form-control form-control-danger';
+      return false;
+    }
     if (c.etiqueta === 'input' && c.tipo === 'number') {
       c.valor = parseInt(c.valor, 10);
       if (c.valor < c.minimo) {
@@ -127,7 +179,7 @@ export class DinamicformComponent implements OnInit, OnChanges {
         return false;
       }
     }
-    if (c.etiqueta === 'file' && c.valor !== null && c.valor !== undefined && c.valor !== '' ) {
+    if (c.etiqueta === 'file' && c.valor !== null && c.valor !== undefined && c.valor !== '') {
       if (c.valor.size > c.tamanoMaximo * 1024000) {
         c.clase = 'form-control form-control-danger';
         c.alerta = 'El tamaño del archivo es superior a : ' + c.tamanoMaximo + 'MB. ';
@@ -170,8 +222,7 @@ export class DinamicformComponent implements OnInit, OnChanges {
       requeridos = d.requerido ? requeridos + 1 : requeridos;
       if (this.validCampo(d)) {
         if (d.etiqueta === 'file') {
-          this.data.files.push({ nombre: d.nombre, file: d.valor });
-          result[d.nombre] = d.valor;
+          result[d.nombre] = { nombre: d.nombre, file: d.File };
           // result[d.nombre].push({ nombre: d.name, file: d.valor });
         } else if (d.etiqueta === 'select') {
           result[d.nombre] = d.relacion ? d.valor : d.valor.Id;
@@ -200,10 +251,43 @@ export class DinamicformComponent implements OnInit, OnChanges {
     }
 
     this.result.emit(this.data);
+    if (this.data.valid)
+    this.percentage.emit(this.data.percentage);
     return this.data;
   }
 
+  auxButton(c) {
+    const result = {};
+    this.normalform.campos.forEach(d => {
+      if (d.etiqueta === 'file') {
+        result[d.nombre] = { nombre: d.nombre, file: d.File };
+      } else if (d.etiqueta === 'select') {
+        result[d.nombre] = d.relacion ? d.valor : d.valor.Id;
+      } else {
+        result[d.nombre] = d.valor;
+      }
+    });
+    const dataTemp = {
+      data: result,
+      button: c.nombre,
+    }
+    this.resultAux.emit(dataTemp);
+  }
+
+
+  setPercentage(): void {
+    let requeridos = 0;
+    let resueltos = 0;
+    this.normalform.campos.forEach(form_element => {
+      if (form_element.requerido) {
+        requeridos = requeridos + 1;
+        resueltos = form_element.valor ? resueltos + 1 : resueltos;
+      }
+    });
+    this.percentage.emit(resueltos / requeridos);
+  }
+
   isEqual(obj1, obj2) {
-    return obj1 === obj2;
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
 }
