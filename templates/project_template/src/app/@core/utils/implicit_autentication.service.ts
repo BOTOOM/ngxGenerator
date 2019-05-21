@@ -1,6 +1,6 @@
-
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Rx';
 import { GENERAL } from './../../app-config';
 import { Md5 } from 'ts-md5/dist/md5';
 
@@ -20,21 +20,23 @@ export class ImplicitAutenticationService {
     constructor() {
         this.bearer = {
             headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Accept': 'application/json',
                 'authorization': 'Bearer ' + window.localStorage.getItem('access_token'),
-                'cache-control': 'no-cache',
             }),
         }
         this.logOut = '';
+        this.timer();
     }
+
     public logout() {
         this.logOut = GENERAL.ENTORNO.TOKEN.SIGN_OUT_URL;
         this.logOut += '?id_token_hint=' + window.localStorage.getItem('id_token');
-        this.logOut += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL;
+        this.logOut += '&post_logout_redirect_uri=' + GENERAL.ENTORNO.TOKEN.SIGN_OUT_REDIRECT_URL; // // + window.location.href; para redirect con regex
         this.logOut += '&state=' + window.localStorage.getItem('state');
         window.location.replace(this.logOut);
         return this.logOut;
     }
+
     clearUrl() {
         const uri = window.location.toString();
         if (uri.indexOf('?') > 0) {
@@ -61,6 +63,7 @@ export class ImplicitAutenticationService {
                     'cache-control': 'no-cache',
                 }),
             }
+            this.setExpiresAt();
             return true;
         } else {
             return false;
@@ -77,19 +80,44 @@ export class ImplicitAutenticationService {
         }
         let url = this.params.AUTORIZATION_URL + '?' +
             'client_id=' + encodeURIComponent(this.params.CLIENTE_ID) + '&' +
-            'redirect_uri=' + encodeURIComponent(this.params.REDIRECT_URL) + '&' +
+            'redirect_uri=' + encodeURIComponent(this.params.REDIRECT_URL) + '&' + // + window.location.href + '&' para redirect con regex
             'response_type=' + encodeURIComponent(this.params.RESPONSE_TYPE) + '&' +
-            'scope=' + encodeURIComponent(this.params.SCOPE);
+            'scope=' + encodeURIComponent(this.params.SCOPE) + '&' +
+            'state_url=' + encodeURIComponent(window.location.hash);
         if (this.params.nonce) {
             url += '&nonce=' + encodeURIComponent(this.params.nonce);
         }
         url += '&state=' + encodeURIComponent(this.params.state);
+        // alert(url);
         return url;
     }
 
     private generateState() {
         const text = ((Date.now() + Math.random()) * Math.random()).toString().replace('.', '');
         return Md5.hashStr(text);
+    }
+
+    setExpiresAt() {
+        if (window.localStorage.getItem('expires_at') === null) {
+            const expires_at = new Date();
+            expires_at.setSeconds(expires_at.getSeconds() +
+                parseInt(window.localStorage.getItem('expires_in'), 10) - 60);
+            window.localStorage.setItem('expires_at', expires_at.toUTCString());
+        }
+    }
+
+    expired() {
+        return (new Date(window.localStorage.getItem('expires_at')) < new Date());
+    }
+
+    timer() {
+        Observable.interval(5000).subscribe(() => {
+            if (window.localStorage.getItem('expires_at') !== null) {
+                if (this.expired()) {
+                    window.localStorage.clear();
+                }
+            }
+        });
     }
 
 }
