@@ -5,6 +5,7 @@ export const Config = {
             PATH: 'https://documental.udistrital.edu.co/nuxeo/',
         },
         WSO2_SERVICE: 'http://jbpm.udistritaloas.edu.co:8280/services',
+        DOCUMENTO_SERVICE: 'http://localhost:8094/v1/',
         {{entity_model.name | upper}}_SERVICE: 'http://localhost:8080/v1/',
         CONFIGURACION_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/api/configuracion_crud_api/v1/',
         NOTIFICACION_SERVICE: 'ws://pruebasapi.intranetoas.udistrital.edu.co:8116/ws/join',
